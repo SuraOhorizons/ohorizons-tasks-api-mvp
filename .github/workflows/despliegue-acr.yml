@@ -28,10 +28,10 @@ jobs:
 
       - name: Azure Login
         run: |
-          az login \
-            --service-principal \
-            --username "<CLIENT_ID>" \
-            --password "<CLIENT_SECRET>" \
+          az login
+            --service-principal
+            --username "<CLIENT_ID>"
+            --password "<CLIENT_SECRET>"
             --tenant "<TENANT_ID>"
 
       - name: Validate Azure Credentials
