@@ -17,10 +17,8 @@ jobs:
      - name: Azure Login
        run: |
          az login
-           --service-principal
-           --username "<CLIENT_ID>"
-           --password "<CLIENT_SECRET>"
-           --tenant "9dbc76ea-fb25-4b07-8f07-5dc315999b76"
+           --device
+           --tenantId "9dbc76ea-fb25-4b07-8f07-5dc315999b76"
      - name: Select Subscription
        run: |
          az account set
