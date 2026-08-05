@@ -13,62 +13,38 @@ env:
 jobs:
  build-and-push:
    runs-on: ubuntu-latest
-   permissions:
-     contents: read
    steps:
      - name: Checkout repository
        uses: actions/checkout@v4
-     - name: Azure Logout
-       run: |
-         az logout || true
      - name: Azure Login
        run: |
-         az login --tenant $TENANT_ID
-     - name: Show Current Account
-       run: |
-         echo "===== ACCOUNT ====="
-         az account show
-     - name: List Subscriptions
-       run: |
-         echo "===== SUBSCRIPTIONS ====="
-         az account list -o table
+         az login --service-principal \
+           --username "<CLIENT_ID>" \
+           --password "<CLIENT_SECRET>" \
+           --tenant "$TENANT_ID"
      - name: Select Subscription
        run: |
-         az account set --subscription $SUBSCRIPTION_ID
-     - name: Validate Subscription
+         az account set --subscription "$SUBSCRIPTION_ID"
+     - name: Show Account
        run: |
-         echo "===== ACTIVE SUBSCRIPTION ====="
          az account show -o table
-     - name: Current User
-       run: |
-         echo "===== USER ====="
-         az account show --query user -o json
-     ##- name: Show User Roles
-        ##run: |
-          ##USER=$(az account show --query user.name -o tsv)
-          ##echo "User: $USER"
-          ## az role assignment list --assignee "$USER" --all -o table
-     - name: Validate ACR
-       run: |
-         echo "===== ACR ====="
-         az acr show --name $ACR_NAME -o table
      - name: Login to ACR
        run: |
-         az acr login --name $ACR_NAME
-     - name: List Repositories
-       run: |
-         az acr repository list --name $ACR_NAME -o table
+         az acr login --name "$ACR_NAME"
      - name: Build Docker Image
        run: |
-         docker build -t $REGISTRY/$IMAGE_NAME:latest -t $REGISTRY/$IMAGE_NAME:${GITHUB_SHA} -t $REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME} .
-     - name: Push Docker Image
+         docker build \
+           -t $REGISTRY/$IMAGE_NAME:latest \
+           -t $REGISTRY/$IMAGE_NAME:${GITHUB_SHA} \
+           -t $REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME} .
+     - name: Push Docker Images
        run: |
          docker push $REGISTRY/$IMAGE_NAME:latest
          docker push $REGISTRY/$IMAGE_NAME:${GITHUB_SHA}
          docker push $REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME}
      - name: Summary
        run: |
-         echo "Images published:"
+         echo "Published:"
          echo "$REGISTRY/$IMAGE_NAME:latest"
          echo "$REGISTRY/$IMAGE_NAME:${GITHUB_SHA}"
          echo "$REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME}"
