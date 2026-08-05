@@ -13,30 +13,35 @@ env:
 jobs:
  build-and-push:
    runs-on: ubuntu-latest
+   permissions:
+     contents: read
    steps:
      - name: Checkout repository
        uses: actions/checkout@v4
      - name: Azure Login
        run: |
-         az login --service-principal \
-           --username "<CLIENT_ID>" \
-           --password "<CLIENT_SECRET>" \
-           --tenant "$TENANT_ID"
+         az login --service-principal 
+           --username "07630def-c403-4203-afcd-1399246159ed" 
+           --password "LCp8Q~QHOdrw0jb-IIBzcUGbjJReX.5Wojqllcm8" 
+           --tenant "9dbc76ea-fb25-4b07-8f07-5dc315999b76"
      - name: Select Subscription
        run: |
-         az account set --subscription "$SUBSCRIPTION_ID"
-     - name: Show Account
+         az account set --subscription "f0550323-fb0b-44d4-8a39-ecf0f6c2dbc9"
+     - name: Validate Account
        run: |
          az account show -o table
+     - name: Validate ACR
+       run: |
+         az acr show --name crsuradev -o table
      - name: Login to ACR
        run: |
-         az acr login --name "$ACR_NAME"
+         az acr login --name crsuradev
+     - name: List Repositories
+       run: |
+         az acr repository list --name crsuradev -o table
      - name: Build Docker Image
        run: |
-         docker build \
-           -t $REGISTRY/$IMAGE_NAME:latest \
-           -t $REGISTRY/$IMAGE_NAME:${GITHUB_SHA} \
-           -t $REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME} .
+         docker build -t $REGISTRY/$IMAGE_NAME:latest -t $REGISTRY/$IMAGE_NAME:${GITHUB_SHA} -t $REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME} .
      - name: Push Docker Images
        run: |
          docker push $REGISTRY/$IMAGE_NAME:latest
@@ -44,7 +49,9 @@ jobs:
          docker push $REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME}
      - name: Summary
        run: |
-         echo "Published:"
+         echo "======================================"
+         echo "Images published:"
          echo "$REGISTRY/$IMAGE_NAME:latest"
          echo "$REGISTRY/$IMAGE_NAME:${GITHUB_SHA}"
          echo "$REGISTRY/$IMAGE_NAME:${GITHUB_REF_NAME}"
+         echo "======================================"
