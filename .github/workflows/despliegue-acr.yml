@@ -43,11 +43,11 @@ jobs:
        run: |
          echo "===== USER ====="
          az account show --query user -o json
-     - name: Show User Roles
-       run: |
-         USER=$(az account show --query user.name -o tsv)
-         echo "User: $USER"
-         az role assignment list --assignee "$USER" --all -o table
+     ##- name: Show User Roles
+        ##run: |
+          ##USER=$(az account show --query user.name -o tsv)
+          ##echo "User: $USER"
+          ##az role assignment list --assignee "$USER" --all -o table
      - name: Validate ACR
        run: |
          echo "===== ACR ====="
