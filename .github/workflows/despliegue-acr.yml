@@ -47,7 +47,7 @@ jobs:
         ##run: |
           ##USER=$(az account show --query user.name -o tsv)
           ##echo "User: $USER"
-          ##az role assignment list --assignee "$USER" --all -o table
+          ## az role assignment list --assignee "$USER" --all -o table
      - name: Validate ACR
        run: |
          echo "===== ACR ====="
