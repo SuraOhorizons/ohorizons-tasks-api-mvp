@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: demo-ohorizons
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml
+  - external-secret.yaml
+
+commonLabels:
+  app.kubernetes.io/name: ohorizons-tasks-api-mvp
+  app.kubernetes.io/part-of: openhorizons-demo
+  app.kubernetes.io/managed-by: argocd
+  open-horizons/horizon: h1
+
+images:
+  - name: app-image
+    newName: suraohorizonsacr.azurecr.io/ohorizons-tasks-api-mvp
+    newTag: v0.1.0

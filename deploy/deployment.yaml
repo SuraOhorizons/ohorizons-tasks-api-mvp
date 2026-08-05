@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ohorizons-tasks-api-mvp
+  namespace: demo-ohorizons
+  labels:
+    app: ohorizons-tasks-api-mvp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ohorizons-tasks-api-mvp
+  template:
+    metadata:
+      labels:
+        app: ohorizons-tasks-api-mvp
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+        - name: ohorizons-tasks-api-mvp
+          image: app-image
+          ports:
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ohorizons-tasks-api-mvp-config
+            - secretRef:
+                name: ohorizons-tasks-api-mvp-secrets
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL

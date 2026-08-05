@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ohorizons-tasks-api-mvp-config
+  namespace: demo-ohorizons
+  labels:
+    app: ohorizons-tasks-api-mvp
+data:
+  LOG_LEVEL: "info"
+  NODE_ENV: "production"
+  ALLOWED_ORIGIN: "*"

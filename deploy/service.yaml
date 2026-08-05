@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ohorizons-tasks-api-mvp
+  namespace: demo-ohorizons
+  labels:
+    app: ohorizons-tasks-api-mvp
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: ohorizons-tasks-api-mvp
