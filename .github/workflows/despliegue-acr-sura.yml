@@ -159,7 +159,7 @@ jobs:
       - name: Summary
         run: |
           echo "========================================="
-          echo "Docker Image Publish Summary"
+          echo "Docker Image Publish Summary "
           echo "========================================="
           echo "Previous image status: $PREVIOUS_IMAGE_STATUS"
           echo "Previous image: $PREVIOUS_IMAGE"
