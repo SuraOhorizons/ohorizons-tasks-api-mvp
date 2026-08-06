@@ -6,7 +6,7 @@ API CRUD de tareas para demo Open Horizons
 
 Microservicio CRUD de tareas generado con el Golden Path H1 - Foundation de Open Horizons.
 Reemplaza a PostgREST: expone la misma forma de contrato REST que ya usa la SPA `ohorizons_ms`
-(`GET/POST /tasks`, `GET/PATCH/DELETE /tasks/:id`), pero con código propio sobre Postgres..
+(`GET/POST /tasks`, `GET/PATCH/DELETE /tasks/:id`), pero con código propio sobre Postgres.
 
 | Property | Value |
 |----------|-------|
