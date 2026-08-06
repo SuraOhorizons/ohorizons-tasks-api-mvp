@@ -38,6 +38,7 @@ jobs:
 
       - name: Select Subscription
         run: |
+          echo "===== SELECTING SUBSCRIPTION ====="
           az account set --subscription "$AZURE_SUBSCRIPTION_ID"
 
       - name: Validate Current Subscription
@@ -45,17 +46,24 @@ jobs:
           echo "===== CURRENT SUBSCRIPTION ====="
           az account show -o table
 
+      - name: List ACRs in Selected Subscription
+        run: |
+          echo "===== ACRs IN CURRENT SUBSCRIPTION ====="
+          az acr list -o table
+
       - name: Validate Azure Container Registry
         run: |
-          echo "===== ACR ====="
+          echo "===== VALIDATING ACR ====="
           az acr show --name "$ACR_NAME" -o table
 
       - name: Login to Azure Container Registry
         run: |
+          echo "===== LOGIN TO ACR ====="
           az acr login --name "$ACR_NAME"
 
       - name: List Repositories
         run: |
+          echo "===== ACR REPOSITORIES ====="
           az acr repository list --name "$ACR_NAME" -o table
 
       - name: Build Docker Image
