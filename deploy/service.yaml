@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ohorizons-tasks-api-mvp
-  namespace: demo-ohorizons
+  namespace: ohorizons-tasks-api-mvp
   labels:
     app: ohorizons-tasks-api-mvp
 spec:
