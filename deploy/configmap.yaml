@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ohorizons-tasks-api-mvp-config
-  namespace: demo-ohorizons
+  namespace: ohorizons-tasks-api-mvp
   labels:
     app: ohorizons-tasks-api-mvp
 data:
